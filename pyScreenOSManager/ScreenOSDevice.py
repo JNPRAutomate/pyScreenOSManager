@@ -15,8 +15,15 @@ import datetime
 #used to enable SSH debugging
 #paramiko.common.logging.basicConfig(level=paramiko.common.DEBUG)
 class ScreenOSDevice:
+    """
+    ScreenOSDevice
+
+    Args:
+        :host: string containing the host to connect to
+        :username: string containing the username to authenticate with
+        :password: string contining the password to authenticate with
+    """
     def __init__(self,hostname,username,password,output,clear_session):
-        """Initalize the object with the correct hostname,username, and password"""
         self.systemFacts = {"hostname":"","product":"","serialNumber":"","controlNumber":"","version":"","type":""}
         self.remoteHost = hostname
         self.promptEnding = "->"
@@ -31,8 +38,21 @@ class ScreenOSDevice:
         else:
             self.output = False
 
-    def connect(self):
-        """Create a connection to the remote device"""
+    def open(self):
+        """
+        Opens an SSH CLI session to the specified ScreenOS-based device
+
+        Example:
+
+        .. code-block:: python
+
+            from pyScreenOSManager import ScreenOSDevice
+
+            //creates a connection to the Screen device
+            dev = ScreenOSDevice(host="1.2.3.4",username="root",password="Juniper")
+            dev.open()
+
+        """
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.settimeout(15)
         try:
